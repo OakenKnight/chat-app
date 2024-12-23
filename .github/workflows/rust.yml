@@ -1,4 +1,4 @@
-name: Rust
+name: Rust Build and Test
 
 on:
   push:
@@ -10,13 +10,27 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        project: [server, client] # Specify each project directory
+
     steps:
     - uses: actions/checkout@v4
-    - name: Build
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable # Use the stable Rust toolchain
+
+    - name: Build ${{ matrix.project }}
       run: cargo build --verbose
-    - name: Run tests
+      working-directory: ./${{ matrix.project }}
+
+    - name: Test ${{ matrix.project }}
       run: cargo test --verbose
+      working-directory: ./${{ matrix.project }}
+
