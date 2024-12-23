@@ -4,7 +4,7 @@ use std::sync::mpsc;
 use std::thread;
 use std::time::Duration;
 
-const LOCAL: &str = "127.0.0.1";
+const LOCAL: &str = "127.0.0.1:8080";
 const MSG_SIZE: usize = 32;
 fn main() {
     let server = TcpListener::bind(LOCAL).expect("Listener failed to bind!");
